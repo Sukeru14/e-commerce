@@ -35,12 +35,17 @@ router
   .as('logout')
   .use(middleware.auth())
 
-// --- ROTAS DE PRODUTOS ---
+// --- ROTAS DE PERFIL DE USUÁRIO ---
 router
-  .resource('/products', ProductsController)
-  .as('products')
-  .except(['create', 'store', 'edit', 'update', 'destroy']) 
+  .group(() => {
+    router.get('/profile/edit', [AuthController, 'edit']).as('profile.edit')
+    router.put('/profile/update', [AuthController, 'update']).as('profile.update')
+  })
+  .use(middleware.auth())
 
+// --- ROTAS DE PRODUTOS ---
+
+// Rotas que EXIGEM autenticação (declaradas primeiro)
 router
   .group(() => {
     router
@@ -49,5 +54,11 @@ router
       .only(['create', 'store', 'edit', 'update', 'destroy'])
   })
   .use(middleware.auth()) 
+
+// Rotas públicas (declaradas depois)
+router
+  .resource('/products', ProductsController)
+  .as('products')
+  .only(['index', 'show'])
 
 router.get('/images/:name', [ImagesController, 'show']).as('images.show')

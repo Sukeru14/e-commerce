@@ -20,12 +20,13 @@
             Produtos
           </a>
         </div>
-      
-</div>
+      </div>
       <div class="hidden sm:ml-6 sm:flex sm:items-center">
         @if (auth.isAuthenticated)
           <img class="size-8 shrink-0 object-cover rounded-full mr-3" alt="{{ auth.user.fullName }}" src="https://ui-avatars.com/api/?name={{ auth.user.fullName }}&background=random">
           <span class="mr-4 text-sm text-gray-700">Olá, {{ auth.user.fullName.split(' ')[0] }}</span>
+
+          <a href="{{ route('profile.edit') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 mr-4">Editar Perfil</a>
 
           @form({ action: route('logout'), method: 'POST' })
             <button type="submit" class="text-sm font-medium text-gray-500 hover:text-gray-700">Sair</button>
