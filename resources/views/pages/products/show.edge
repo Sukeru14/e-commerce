@@ -1,24 +1,83 @@
-@layout.app({ title: 'oi' })
+@layout.app({ title: product.name })
 
 @slot('main')
-<div></div>
-  <h1>Produto</h1>
-</div>
-<div>
-  <span>
-    {{ product.name }}
-  </span>
-  <span>
-    {{ product.price }}
-  </span>
-  <span>
-    {{ product.description }}
-  </span>
+  <div class="bg-white rounded-lg shadow-xl overflow-hidden">
+    <div class="lg:grid lg:grid-cols-2 lg:gap-x-8 lg:items-start">
+      
+      <div class="p-4 sm:p-6 lg:p-8">
+        @if(product.images && product.images.length > 0)
+          <div class="w-full aspect-w-1 aspect-h-1 rounded-lg overflow-hidden">
+            <img
+              src="{{ route('images.show', { name: product.images[0].name }) }}"
+              alt="{{ product.name }}"
+              class="w-full h-full object-center object-cover"
+            />
+          </div>
+        @else
+          <div class="w-full aspect-w-1 aspect-h-1 rounded-lg overflow-hidden bg-gray-100 flex items-center justify-center">
+            <svg class="w-24 h-24 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+            </svg>
+          </div>
+        @endif
+        
+        @if(product.images && product.images.length > 1)
+          <div class="hidden sm:grid sm:grid-cols-5 sm:gap-4 mt-4">
+            @each(image in product.images.slice(1))
+              <div class="aspect-w-1 aspect-h-1 rounded-md overflow-hidden cursor-pointer opacity-60 hover:opacity-100">
+                <img src="{{ route('images.show', { name: image.name }) }}" class="w-full h-full object-center object-cover">
+              </div>
+            @end
+          </div>
+        @endif
+      </div>
 
-  @each(image in product.images)
-    <img src="{{ route('images.show', { name: image.name })}}" />
-  @end
-</div>
+      <div class="p-4 sm:p-6 lg:p-8 border-t border-gray-200 lg:border-t-0 lg:border-l">
+        <h1 class="text-3xl font-extrabold tracking-tight text-gray-900">{{ product.name }}</h1>
+
+        <div class="mt-3">
+          <p class="text-3xl text-gray-900">R$ {{ product.price.toFixed(2).replace('.', ',') }}</p>
+        </div>
+
+        <div class="mt-6">
+          <h3 class="sr-only">Descrição</h3>
+          <div class="text-base text-gray-700 space-y-6">
+            <p>{{ product.description }}</p>
+          </div>
+        </div>
+
+        <div class="mt-10 flex">
+          <button
+            type="submit"
+            class="w-full justify-center inline-flex items-center 
+                   rounded-md border border-transparent 
+                   bg-primary px-8 py-3 
+                   text-base font-medium text-text-inverted 
+                   shadow-sm 
+                   hover:bg-primary-hover 
+                   focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 
+                   transition duration-150 ease-in-out
+                   cursor-pointer"
+          >
+            Adicionar ao Carrinho (Em breve)
+          </button>
+        </div>
+
+        <div class="mt-6 flex gap-x-2">
+            @if(auth.isAuthenticated)
+              <a href="{{ route('products.edit', { id: product.id }) }}" class="flex-1 text-center rounded-md bg-secondary px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm hover:opacity-80">
+                Editar
+              </a>
+              @form({ action: route('products.destroy', { id: product.id }, { qs: { _method: 'DELETE' }}) })
+                <button type="submit" class="flex-1 text-center rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-500 cursor-pointer"> {{-- <== E ADICIONE AQUI --}}
+                  Deletar
+                </button>
+              @end
+            @endif
+          </div>
+
+      </div>
+    </div>
+  </div>
 @end
-
 @end

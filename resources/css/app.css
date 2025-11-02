@@ -1,3 +1,10 @@
 @import "tailwindcss";
-@import "basecoat-css";
 @source "../views";
+
+@theme {
+  --color-primary: #7c3aed; /* Roxo principal */
+  --color-primary-hover: #6d28d9; /* Roxo mais escuro para hover */
+  --color-secondary: #bef264; /* Verde-limão como destaque */
+  --color-text-base: #111827; /* Texto escuro (para fundos claros) */
+  --color-text-inverted: #f9fafb; /* Texto claro (para botões) */
+}

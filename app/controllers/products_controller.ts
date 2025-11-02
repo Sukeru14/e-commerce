@@ -9,7 +9,7 @@ import Image from '#models/image'
 
 export default class ProductsController {
   public async index({ view }: HttpContext) {
-    const products = await Product.all()
+    const products = await Product.query().preload('images')
 
     return view.render('pages/products/index', { products })
   }

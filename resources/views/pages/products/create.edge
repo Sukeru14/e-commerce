@@ -70,10 +70,9 @@
         <a href="{{ route('products.index') }}" class="btn-secondary">
           Cancelar
         </a>
-        <button type="submit" class="btn">
-          {{ product ?
- 'Salvar' : 'Criar' }}
-        </button>
+        @button({ type: 'submit' })
+          {{ product ? 'Salvar' : 'Criar' }}
+        @end
       </div>
     @end
   @end
