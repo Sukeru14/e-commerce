@@ -19,6 +19,9 @@
                   value: product?.name || ''
                 })
               </div>
+              @if(flashMessages.has(`errors.name`))
+                <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.name`) }}</p>
+              @end
             </div>
 
             <div class="sm:col-span-3">
@@ -31,20 +34,36 @@
                   value: product?.price || ''
                 })
               </div>
+              @if(flashMessages.has(`errors.price`))
+                <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.price`) }}</p>
+              @end
             </div>
 
             <div class="sm:col-span-3">
               <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Imagem do Produto</label>
               <div class="mt-2">
-                <input type="file" name="image" accept="image/png, image/jpeg" />
+               <input type="file" name="image" accept="image/png, image/jpeg" />
               </div>
+              @if(flashMessages.has(`errors.image`))
+                <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.image`) }}</p>
+              @end
             </div>
 
-            @!textarea({
-              name: 'description',
-              value: product?.description || ''
-            })
-          </div>
+            <div class="sm:col-span-6">
+              <label for="description" class="block text-sm/6 font-medium text-gray-900">Descrição</label>
+              <div class="mt-2">
+                @!textarea({
+                  name: 'description',
+                  id: 'description',
+                  value: product?.description || ''
+                })
+                @if(flashMessages.has(`errors.description`))
+                  <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.description`) }}</p>
+                @end
+              </div>
+            </div>
+      
+           </div>
         </div>
       </div>
       <div class="mt-6 flex items-center justify-end gap-x-6">
@@ -52,7 +71,8 @@
           Cancelar
         </a>
         <button type="submit" class="btn">
-          {{ product ? 'Salvar' : 'Criar' }}
+          {{ product ?
+ 'Salvar' : 'Criar' }}
         </button>
       </div>
     @end

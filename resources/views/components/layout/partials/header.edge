@@ -2,15 +2,38 @@
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 justify-between">
       <div class="flex">
-        <div class="flex shrink-0 items-center">
+        <a href="{{ route('home') }}" class="flex shrink-0 items-center">
           Ruralmerce
-        </div>
+        </a>
         <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-          <a href="#" aria-current="page" class="inline-flex items-center border-b-2 border-indigo-600 px-1 pt-1 text-sm font-medium text-gray-900">Home</a>
+          <a
+            href="{{ route('home') }}"
+            aria-current="page"
+            class="inline-flex items-center border-b-2 {{ request.url() === '/' ? 'border-indigo-600 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} px-1 pt-1 text-sm font-medium"
+          >
+            Home
+          </a>
+          <a
+            href="{{ route('products.index') }}"
+            class="inline-flex items-center border-b-2 {{ request.url().startsWith('/products') ? 'border-indigo-600 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} px-1 pt-1 text-sm font-medium"
+          >
+            Produtos
+          </a>
         </div>
-      </div>
+      
+</div>
       <div class="hidden sm:ml-6 sm:flex sm:items-center">
-        <img class="size-8 shrink-0 object-cover rounded-full" alt="@hunvreus" src="https://github.com/hunvreus.png">
+        @if (auth.isAuthenticated)
+          <img class="size-8 shrink-0 object-cover rounded-full mr-3" alt="{{ auth.user.fullName }}" src="https://ui-avatars.com/api/?name={{ auth.user.fullName }}&background=random">
+          <span class="mr-4 text-sm text-gray-700">Olá, {{ auth.user.fullName.split(' ')[0] }}</span>
+
+          @form({ action: route('logout'), method: 'POST' })
+            <button type="submit" class="text-sm font-medium text-gray-500 hover:text-gray-700">Sair</button>
+          @end
+        @else
+          <a href="{{ route('login.create') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 mr-4">Login</a>
+          <a href="{{ route('register.create') }}" class="btn-secondary btn-sm">Criar Conta</a>
+        @endif
       </div>
     </div>
   </div>

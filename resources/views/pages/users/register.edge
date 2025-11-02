@@ -1,0 +1,81 @@
+@layout.app({ title: 'Criar Conta' })
+  @slot('main')
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Crie sua conta</h2>
+      </div>
+
+      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        @form({ action: route('register.store'), method: 'POST' })
+          
+          <div>
+            <label for="fullName" class="block text-sm/6 font-medium text-gray-900">Nome Completo</label>
+            <div class="mt-2">
+              @!input({
+                type: 'text',
+                name: 'fullName',
+                id: 'fullName',
+                value: flashMessages.get('fullName') || '',
+                required: true,
+                class: 'w-full'
+              })
+            </div>
+            @if(flashMessages.has('errors.fullName'))
+              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.fullName') }}</p>
+            @end
+          </div>
+
+          <div class="mt-4">
+            <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
+            <div class="mt-2">
+              @!input({
+                type: 'email',
+                name: 'email',
+                id: 'email',
+                value: flashMessages.get('email') || '',
+                required: true,
+                class: 'w-full'
+              })
+            </div>
+            @if(flashMessages.has('errors.email'))
+              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.email') }}</p>
+            @end
+          </div>
+
+          <div class="mt-4">
+            <label for="password" class="block text-sm/6 font-medium text-gray-900">Senha</label>
+            <div class="mt-2">
+              @!input({
+                type: 'password',
+                name: 'password',
+                id: 'password',
+                required: true,
+                class: 'w-full'
+              })
+            </div>
+            @if(flashMessages.has('errors.password'))
+              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.password') }}</p>
+            @end
+          </div>
+
+          <div class="mt-4">
+            <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-900">Confirmar Senha</label>
+            <div class="mt-2">
+              @!input({
+                type: 'password',
+                name: 'password_confirmation',
+                id: 'password_confirmation',
+                required: true,
+                class: 'w-full'
+              })
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <button type="submit" class="btn w-full">Criar conta</button>
+          </div>
+        @end
+      </div>
+    </div>
+  @end
+@end

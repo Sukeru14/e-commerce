@@ -1,0 +1,58 @@
+@layout.app({ title: 'Login' })
+  @slot('main')
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Acesse sua conta</h2>
+      </div>
+
+      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        
+        @if(flashMessages.has('errors.auth'))
+          <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+            <span class="block sm:inline">{{ flashMessages.get('errors.auth') }}</span>
+          </div>
+        @endif
+
+        @form({ action: route('login.store'), method: 'POST' })
+          
+          <div class="mt-4">
+            <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
+            <div class="mt-2">
+              @!input({
+                type: 'email',
+                name: 'email',
+                id: 'email',
+                value: flashMessages.get('email') || '',
+                required: true,
+                class: 'w-full'
+              })
+            </div>
+            @if(flashMessages.has('errors.email'))
+              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.email') }}</p>
+            @end
+          </div>
+
+          <div class="mt-4">
+            <label for="password" class="block text-sm/6 font-medium text-gray-900">Senha</label>
+            <div class="mt-2">
+              @!input({
+                type: 'password',
+                name: 'password',
+                id: 'password',
+                required: true,
+                class: 'w-full'
+              })
+            </div>
+            @if(flashMessages.has('errors.password'))
+              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.password') }}</p>
+            @end
+          </div>
+
+          <div class="mt-6">
+            <button type="submit" class="btn w-full">Entrar</button>
+          </div>
+        @end
+      </div>
+    </div>
+  @end
+@end
