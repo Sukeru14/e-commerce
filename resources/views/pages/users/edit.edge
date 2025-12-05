@@ -2,21 +2,26 @@
   @slot('main')
     <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
       <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Editar Perfil</h2>
+        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-contrast">
+          Editar Perfil
+        </h2>
       </div>
 
       <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 
         @if(flashMessages.has('success'))
-          <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+          <div
+            class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4"
+            role="alert"
+          >
             <span class="block sm:inline">{{ flashMessages.get('success') }}</span>
           </div>
         @endif
-
+        
         @form({ action: route('profile.update', {}, { qs: { _method: 'PUT' } }), method: 'POST' })
-          
+
           <div>
-            <label for="fullName" class="block text-sm/6 font-medium text-gray-900">Nome Completo</label>
+            <label for="fullName" class="block text-sm/6 font-medium text-contrast">Nome Completo</label>
             <div class="mt-2">
               @!input({
                 type: 'text',
@@ -28,12 +33,14 @@
               })
             </div>
             @if(flashMessages.has('errors.fullName'))
-              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.fullName') }}</p>
+              <p class="text-sm text-red-600 mt-1">
+                {{ flashMessages.get('errors.fullName') }}
+              </p>
             @end
           </div>
 
           <div class="mt-4">
-            <label for="email" class="block text-sm/6 font-medium text-gray-900">Email</label>
+            <label for="email" class="block text-sm/6 font-medium text-contrast">Email</label>
             <div class="mt-2">
               @!input({
                 type: 'email',
@@ -41,16 +48,19 @@
                 id: 'email',
                 value: user.email || flashMessages.get('email') || '',
                 required: true,
-                class: 'w-full'
+                readonly: true,
+                class: 'w-full opacity-70 cursor-not-allowed'
               })
             </div>
             @if(flashMessages.has('errors.email'))
-              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.email') }}</p>
+              <p class="text-sm text-red-600 mt-1">
+                {{ flashMessages.get('errors.email') }}
+              </p>
             @end
           </div>
 
           <div class="mt-4">
-            <label for="password" class="block text-sm/6 font-medium text-gray-900">Nova Senha (Opcional)</label>
+            <label for="password" class="block text-sm/6 font-medium text-contrast">Nova Senha (Opcional)</label>
             <div class="mt-2">
               @!input({
                 type: 'password',
@@ -60,12 +70,14 @@
               })
             </div>
             @if(flashMessages.has('errors.password'))
-              <p class="text-sm text-red-600 mt-1">{{ flashMessages.get('errors.password') }}</p>
+              <p class="text-sm text-red-600 mt-1">
+                {{ flashMessages.get('errors.password') }}
+              </p>
             @end
           </div>
 
           <div class="mt-4">
-            <label for="password_confirmation" class="block text-sm/6 font-medium text-gray-900">Confirmar Nova Senha</label>
+            <label for="password_confirmation" class="block text-sm/6 font-medium text-contrast">Confirmar Nova Senha</label>
             <div class="mt-2">
               @!input({
                 type: 'password',

@@ -1,27 +1,19 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'products'
+  protected tableName = 'orders'
 
-  async up() {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-
-      table.string('name', 255)
-      table.decimal('price', 10, 2)
-      table.text('description')
-
-      table.string('developer').nullable()
-      table.string('publisher').nullable()
-      table.string('genre').nullable()
-      table.date('release_date').nullable()
-
+      table.integer('user_id').unsigned().notNullable()
+      table.decimal('total', 10, 2).notNullable()
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })
   }
 
-  async down() {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

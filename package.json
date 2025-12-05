@@ -8,6 +8,7 @@
     "start": "node bin/server.js",
     "build": "node ace build",
     "dev": "node ace serve --hmr",
+    "reset-db": "pwsh -Command \"Remove-Item './tmp/db.sqlite3' -Force -ErrorAction SilentlyContinue; if (Test-Path './tmp/uploads'){ Remove-Item './tmp/uploads/*' -Recurse -Force -ErrorAction SilentlyContinue }; node ace migration:run; node ace db:seed\"",
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",

@@ -1,79 +1,193 @@
-@layout.app({ title: 'oi' })
+@layout.app({ title: product ? 'Editar Jogo' : 'Adicionar Novo Jogo' })
   @slot('main')
     @let(url = product ? route('products.update', { id: product.id }, { qs: { _method: 'PUT' } }) : route('products.store'))
 
-    @form({ action: url, method: 'POST', enctype: 'multipart/form-data' })
-      <div class="space-y-12">
-        <div class="border-b border-gray-900/10 pb-12">
-          <h2 class="text-base/7 font-semibold text-gray-900">Produto</h2>
-          <p class="mt-1 text-sm/6 text-gray-600">Esta informação será exibida publicamente, portanto, tenha cuidado com o que compartilha.</p>
+    <div class="sm:mx-auto sm:w-full sm:max-w-2xl">
+      <h2 class="mt-2 text-center text-3xl font-bold tracking-tight text-contrast">
+        {{ product ? 'Editar Jogo' : 'Adicionar Novo Jogo' }}
+      </h2>
+    </div>
 
-          <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="sm:col-span-3">
-              <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Nome</label>
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-2xl">
+      @form({ action: url, method: 'POST', enctype: 'multipart/form-data' })
+        <div class="space-y-6 bg-white px-6 py-8 shadow sm:rounded-lg sm:px-10">
+
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+            <div>
+              <label for="name" class="block text-sm font-medium leading-6 text-base-color">Título do Jogo</label>
               <div class="mt-2">
                 @!input({
                   type: 'text',
                   name: 'name',
-                  placeholder: 'nome ...',
-                  value: product?.name || ''
+                  id: 'name',
+                  placeholder: 'Ex: Cyberpunk 2077',
+                  value: product?.name || flashMessages.get('name') || '',
+                  class: 'text-base-color'
                 })
               </div>
               @if(flashMessages.has(`errors.name`))
-                <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.name`) }}</p>
+                <p class="text-sm text-red-600 mt-1">
+                  {{ flashMessages.get(`errors.name`) }}
+                </p>
               @end
             </div>
 
-            <div class="sm:col-span-3">
-              <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Preço</label>
+            <div>
+              <label for="price" class="block text-sm font-medium leading-6 text-base-color">Preço (R$)</label>
               <div class="mt-2">
                 @!input({
                   type: 'number',
                   name: 'price',
-                  placeholder: 'preço ...',
-                  value: product?.price || ''
+                  id: 'price',
+                  placeholder: 'Ex: 199.99',
+                  step: '0.01',
+                  value: product?.price || flashMessages.get('price') || '',
+                  class: 'text-base-color'
                 })
               </div>
               @if(flashMessages.has(`errors.price`))
-                <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.price`) }}</p>
+                <p class="text-sm text-red-600 mt-1">
+                  {{ flashMessages.get(`errors.price`) }}
+                </p>
               @end
             </div>
+          </div>
 
-            <div class="sm:col-span-3">
-              <label for="first-name" class="block text-sm/6 font-medium text-gray-900">Imagem do Produto</label>
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+            <div>
+              <label for="developer" class="block text-sm font-medium leading-6 text-base-color">Desenvolvedora</label>
               <div class="mt-2">
-               <input type="file" name="image" accept="image/png, image/jpeg" />
-              </div>
-              @if(flashMessages.has(`errors.image`))
-                <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.image`) }}</p>
-              @end
-            </div>
-
-            <div class="sm:col-span-6">
-              <label for="description" class="block text-sm/6 font-medium text-gray-900">Descrição</label>
-              <div class="mt-2">
-                @!textarea({
-                  name: 'description',
-                  id: 'description',
-                  value: product?.description || ''
+                @!input({
+                  type: 'text',
+                  name: 'developer',
+                  id: 'developer',
+                  placeholder: 'Ex: CD Projekt Red',
+                  value: product?.developer || flashMessages.get('developer') || '',
+                  class: 'text-base-color'
                 })
-                @if(flashMessages.has(`errors.description`))
-                  <p class="text-sm text-red-600 mt-1">{{ flashMessages.get(`errors.description`) }}</p>
-                @end
               </div>
+              @if(flashMessages.has(`errors.developer`))
+                <p class="text-sm text-red-600 mt-1">
+                  {{ flashMessages.get(`errors.developer`) }}
+                </p>
+              @end
             </div>
-      
-           </div>
+
+            <div>
+              <label for="publisher" class="block text-sm font-medium leading-6 text-base-color">Publicadora</label>
+              <div class="mt-2">
+                @!input({
+                  type: 'text',
+                  name: 'publisher',
+                  id: 'publisher',
+                  placeholder: 'Ex: CD Projekt Red',
+                  value: product?.publisher || flashMessages.get('publisher') || '',
+                  class: 'text-base-color'
+                })
+              </div>
+              @if(flashMessages.has(`errors.publisher`))
+                <p class="text-sm text-red-600 mt-1">
+                  {{ flashMessages.get(`errors.publisher`) }}
+                </p>
+              @end
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-2">
+            <div>
+              <label for="genre" class="block text-sm font-medium leading-6 text-base-color">Gênero</label>
+              <div class="mt-2">
+                @!input({
+                  type: 'text',
+                  name: 'genre',
+                  id: 'genre',
+                  placeholder: 'Ex: RPG, Ação',
+                  value: product?.genre || flashMessages.get('genre') || '',
+                  class: 'text-base-color'
+                })
+              </div>
+              @if(flashMessages.has(`errors.genre`))
+                <p class="text-sm text-red-600 mt-1">
+                  {{ flashMessages.get(`errors.genre`) }}
+                </p>
+              @end
+            </div>
+
+            <div>
+              <label for="release_date" class="block text-sm font-medium leading-6 text-base-color">Data de Lançamento</label>
+              <div class="mt-2">
+                @!input({
+                  type: 'date',
+                  name: 'release_date',
+                  id: 'release_date',
+                  value: product?.release_date ? product.release_date.toISODate() : flashMessages.get('release_date') || '',
+                  class: 'text-base-color'
+                })
+              </div>
+              @if(flashMessages.has(`errors.release_date`))
+                <p class="text-sm text-red-600 mt-1">
+                  {{ flashMessages.get(`errors.release_date`) }}
+                </p>
+              @end
+            </div>
+          </div>
+
+          <div>
+            <label for="image" class="block text-sm font-medium leading-6 text-base-color">Imagem da Capa</label>
+            <div class="mt-2">
+              <input
+                type="file"
+                name="image"
+                id="image"
+                accept="image/png, image/jpeg"
+                class="block w-full text-sm text-base-color
+               file:mr-4 file:py-2 file:px-4
+               file:rounded-md file:border-0
+               file:text-sm file:font-semibold
+               file:bg-white/5 file:text-base-color
+               hover:file:bg-white/10"
+              />
+            </div>
+            @if(flashMessages.has(`errors.image`))
+              <p class="text-sm text-red-600 mt-1">
+                {{ flashMessages.get(`errors.image`) }}
+              </p>
+            @end
+            @if(product)
+              <p class="text-sm text-base-color mt-1">
+                Deixe em branco para manter a imagem atual.
+              </p>
+            @endif
+          </div>
+
+          <div>
+            <label for="description" class="block text-sm font-medium leading-6 text-base-color">Descrição</label>
+            <div class="mt-2">
+              @!textarea({
+                name: 'description',
+                id: 'description',
+                rows: 4,
+                value: product?.description || flashMessages.get('description') || '',
+                class: 'text-base-color'
+              })
+              @if(flashMessages.has(`errors.description`))
+                <p class="text-sm text-red-600 mt-1">
+                  {{ flashMessages.get(`errors.description`) }}
+                </p>
+              @end
+            </div>
+          </div>
+
+          <div class="mt-6 flex items-center justify-end gap-x-6">
+            <a href="{{ route('products.index') }}" class="text-sm font-semibold leading-6 text-base-color">
+              Cancelar
+            </a>
+            @button({ type: 'submit' })
+              {{ product ? 'Salvar Alterações' : 'Criar Jogo' }}
+            @end
+          </div>
         </div>
-      </div>
-      <div class="mt-6 flex items-center justify-end gap-x-6">
-        <a href="{{ route('products.index') }}" class="btn-secondary">
-          Cancelar
-        </a>
-        @button({ type: 'submit' })
-          {{ product ? 'Salvar' : 'Criar' }}
-        @end
-      </div>
-    @end
+      @end
+    </div>
   @end
 @end

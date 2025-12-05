@@ -1,0 +1,111 @@
+@layout.app({ title: 'Meu Carrinho' })
+
+  @slot('main')
+    <div class="bg-white shadow sm:rounded-lg overflow-hidden">
+      <div class="px-4 py-5 sm:px-6 flex justify-between items-center">
+        <h3 class="text-lg leading-6 font-medium text-base-color">
+          Meu Carrinho de Compras
+        </h3>
+        <span class="text-sm text-base-color">{{ items.length }} itens</span>
+      </div>
+
+      @if(flashMessages.has('success'))
+        <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+          <p>
+            {{ flashMessages.get('success') }}
+          </p>
+        </div>
+      @endif
+      
+      <ul role="list" class="divide-y divide-gray-200">
+        @each(item in items)
+          <li class="flex py-6 px-4 sm:px-6">
+            <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
+              @if(item.product.images && item.product.images.length > 0)
+                <img
+                  src="{{ route('images.show', { name: item.product.images[0].name }) }}"
+                  alt="{{ item.product.name }}"
+                  class="h-full w-full object-cover object-center"
+                />
+              @else
+                <div class="h-full w-full bg-gray-100 flex items-center justify-center text-base-color">
+                  Sem Foto
+                </div>
+              @endif
+            </div>
+
+            <div class="ml-4 flex flex-1 flex-col">
+              <div>
+                <div class="flex justify-between text-base font-medium text-base-color">
+                  <h3>
+                    <a href="{{ route('products.show', { id: item.product.id }) }}">{{ item.product.name }}</a>
+                  </h3>
+                  <p class="ml-4">
+                    R$ {{ (item.product.price * item.quantity).toFixed(2).replace('.', ',') }}
+                  </p>
+                </div>
+                <p class="mt-1 text-sm text-base-color">
+                  {{ item.product.description.substring(0, 50) }}...
+                </p>
+              </div>
+              <div class="flex flex-1 items-end justify-between text-sm">
+                <p class="text-base-color">
+                  Qtd {{ item.quantity }}
+                </p>
+
+                <div class="flex">
+                  @form({ action: route('cart.destroy', { id: item.id }, { qs: { _method: 'DELETE' } }) })
+                    <button type="submit" class="font-medium text-red-600 hover:text-red-500 cursor-pointer">Remover</button>
+                  @end
+                </div>
+              </div>
+            </div>
+          </li>
+        @else
+          <li class="py-12 text-center text-base-color">
+            Seu carrinho está vazio. 
+          <a href="{{ route('products.index') }}" class="text-primary hover:text-primary-hover">Ir às compras!</a>
+          </li>
+        @end
+      </ul>
+
+      @if(items.length > 0)
+        <div class="border-t border-gray-200 px-4 py-6 sm:px-6 bg-gray-50">
+          <div class="flex justify-between text-base font-medium text-base-color">
+            <p>
+              Subtotal
+            </p>
+            <p>
+              R$ {{ total.toFixed(2).replace('.', ',') }}
+            </p>
+          </div>
+          <p class="mt-0.5 text-sm text-base-color">
+            Frete e impostos calculados no checkout.
+          </p>
+          <div class="mt-6">
+            @form({ action: route('cart.checkout'), method: 'POST' })
+              <button
+                type="submit"
+                class="w-full flex items-center justify-center rounded-md border border-transparent bg-primary px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-primary-hover transition duration-150 ease-in-out cursor-pointer"
+              >
+                Finalizar Compra
+            </button>
+            @end
+          </div>
+          <div class="mt-6 flex justify-center text-center text-sm text-base-color">
+            <p>
+              ou
+            <a
+                href="{{ route('products.index') }}"
+                class="font-medium text-primary hover:text-primary-hover cursor-pointer"
+              >
+                Continuar Comprando
+              <span aria-hidden="true">&rarr;</span>
+              </a>
+            </p>
+          </div>
+        </div>
+      @endif
+    </div>
+  @end
+@end

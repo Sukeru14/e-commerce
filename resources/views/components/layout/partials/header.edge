@@ -1,40 +1,58 @@
-<nav class="border-b border-gray-200">
-  <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-    <div class="flex h-16 justify-between">
-      <div class="flex">
-        <a href="{{ route('home') }}" class="flex shrink-0 items-center">
-          Labor </a>
-        <div class="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-          <a
-            href="{{ route('home') }}"
-            aria-current="page"
-            class="inline-flex items-center border-b-2 {{ request.url() === '/' ? 'border-indigo-600 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} px-1 pt-1 text-sm font-medium"
-          >
-            Home
-          </a>
-          <a
-            href="{{ route('products.index') }}"
-            class="inline-flex items-center border-b-2 {{ request.url().startsWith('/products') ? 'border-indigo-600 text-gray-900' : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700' }} px-1 pt-1 text-sm font-medium"
-          >
-            Produtos
-          </a>
+<nav class="bg-transparent border-b border-white/10">
+  <div class="container flex items-center justify-between py-4">
+    <div class="flex items-center gap-6">
+      <a href="{{ route('home') }}" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-md bg-primary flex items-center justify-center text-white font-bold">
+          L
         </div>
+        <div class="text-2xl font-semibold text-contrast">
+          Labor
+        </div>
+      </a>
+
+      <div class="hidden sm:block">
+        <a href="{{ route('home') }}" class="text-sm font-medium text-muted-dark mr-4">Home</a>
+        <a href="{{ route('products.index') }}" class="text-sm font-medium text-muted-dark">Jogos</a>
       </div>
-      <div class="hidden sm:ml-6 sm:flex sm:items-center">
-        @if (auth.isAuthenticated)
-          <img class="size-8 shrink-0 object-cover rounded-full mr-3" alt="{{ auth.user.fullName }}" src="https://ui-avatars.com/api/?name={{ auth.user.fullName }}&background=random">
-          <span class="mr-4 text-sm text-gray-700">Olá, {{ auth.user.fullName.split(' ')[0] }}</span>
+    </div>
 
-          <a href="{{ route('profile.edit') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 mr-4">Editar Perfil</a>
+    <div class="flex-1 hidden md:flex justify-center px-4">
+      <form action="{{ route('products.index') }}" method="GET" class="w-full max-w-xl">
+        <input
+          name="q"
+          type="search"
+          placeholder="Buscar jogos, desenvolvedores, gênero..."
+          class="w-full rounded-lg px-4 py-2 bg-white/5 text-contrast placeholder:text-muted-dark border border-white/5 focus:outline-none"
+        />
+      </form>
+    </div>
 
-          @form({ action: route('logout'), method: 'POST' })
-            <button type="submit" class="text-sm font-medium text-gray-500 hover:text-gray-700 cursor-pointer">Sair</button>
-          @end
+    <div class="flex items-center gap-4">
+      @if (auth.isAuthenticated)
+        <img
+          class="w-9 h-9 rounded-full object-cover"
+          alt="{{ auth.user.fullName }}"
+          src="https://ui-avatars.com/api/?name={{ auth.user.fullName }}&background=random"
+        />
+        <span class="hidden sm:inline text-sm text-muted-dark">Olá, {{ auth.user.fullName.split(' ')[0] }}</span>
+
+        @if(auth.user.isAdmin)
+          <a href="{{ route('admin.index') }}" class="text-sm text-muted-dark ml-4">Admin</a>
         @else
-          <a href="{{ route('login.create') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 mr-4">Login</a>
-          <a href="{{ route('register.create') }}" class="btn-secondary btn-sm">Criar Conta</a>
+          <a href="{{ route('cart.index') }}" class="text-sm text-muted-dark ml-4">Carrinho</a>
+          <a href="{{ route('orders.index') }}" class="text-sm text-muted-dark ml-4">Pedidos</a>
+          <a href="{{ route('library.index') }}" class="text-sm text-muted-dark ml-4">Biblioteca</a>
         @endif
-      </div>
+        
+        <a href="{{ route('profile.edit') }}" class="text-sm text-muted-dark ml-4">Perfil</a>
+
+        @form({ action: route('logout'), method: 'POST' })
+          <button type="submit" class="ml-4 px-3 py-1 rounded bg-white/5 text-sm">Sair</button>
+        @end
+      @else
+        <a href="{{ route('login.create') }}" class="text-sm text-muted-dark">Login</a>
+        <a href="{{ route('register.create') }}" class="ml-3 btn-primary text-sm">Criar Conta</a>
+      @endif
     </div>
   </div>
 </nav>

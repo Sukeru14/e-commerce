@@ -1,0 +1,114 @@
+@layout.app({ title: 'Painel Admin' })
+  @slot('main')
+    <div class="max-w-7xl mx-auto">
+      <h1 class="text-2xl font-bold text-contrast mb-6">
+        Painel Admin
+      </h1>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
+        <div class="p-4 card">
+          <div class="text-sm text-muted-dark">
+            Produtos
+          </div>
+          <div class="text-2xl font-bold text-contrast">
+            {{ totalProducts }}
+          </div>
+        </div>
+        <div class="p-4 card">
+          <div class="text-sm text-muted-dark">
+            Usuários
+          </div>
+          <div class="text-2xl font-bold text-contrast">
+            {{ totalUsers }}
+          </div>
+        </div>
+        <div class="p-4 card">
+          <div class="text-sm text-muted-dark">
+            Pedidos
+          </div>
+          <div class="text-2xl font-bold text-contrast">
+            {{ totalOrders }}
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
+        <div class="card p-4 h-full flex flex-col">
+          <h2 class="text-lg font-semibold text-contrast mb-3">
+            Top Produtos
+          </h2>
+          <ul class="flex flex-col gap-2 flex-1">
+            @each(prod in topProducts)
+              <li class="flex items-center gap-x-3 flex-1">
+                @if(prod.images && prod.images.length > 0)
+                  <div class="h-full w-16 md:w-20 rounded-md overflow-hidden">
+                    <img
+                      src="{{ route('images.show', { name: prod.images[0].name }) }}"
+                      class="h-full w-full object-cover"
+                    />
+                  </div>
+                @endif
+                <div>
+                  <div class="font-medium text-contrast text-sm sm:text-base">
+                    {{ prod.name }}
+                  </div>
+                  <div class="text-sm text-muted-dark">
+                    Vendas: {{ prod.salesCount || 0 }}
+                  </div>
+                </div>
+              </li>
+            @endeach
+          </ul>
+        </div>
+
+        <div class="card p-4 h-full flex flex-col">
+          <h2 class="text-lg font-semibold text-contrast mb-3">
+            Últimos Pedidos
+          </h2>
+          <ul class="space-y-3 flex-1 overflow-auto">
+            @each(order in recentOrders)
+              <li class="border rounded p-3 bg-white">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <div class="font-medium text-base-color">
+                      Pedido #{{ order.id }}
+                    </div>
+                    <div class="text-sm text-base-color">
+                      Por: {{ order.user ? order.user.fullName : '—' }}
+                    </div>
+                    <div class="text-sm text-base-color">
+                      {{ order.formattedDate || (order.createdAt ? order.createdAt.toISODate() : '') }}
+                    </div>
+                  </div>
+                  <div class="font-bold text-base-color">
+                    R$ {{ Number(order.total).toFixed(2).replace('.', ',') }}
+                  </div>
+                </div>
+                <div class="mt-2 text-sm text-base-color">
+                  @each(item in order.items)
+                    <div>
+                      {{ item.quantity }}x {{ item.product ? item.product.name : 'Produto removido' }}
+                    </div>
+                  @endeach
+                </div>
+              </li>
+            @endeach
+          </ul>
+          <div class="mt-4 text-right">
+            <a href="{{ route('admin.orders') }}" class="text-sm text-primary underline">Ver todos os pedidos</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 p-4 card">
+        <div class="text-sm text-muted-dark">
+          Receita total
+        </div>
+        <div class="text-2xl font-bold text-contrast">
+          R$ {{ Number(totalRevenue).toFixed(2).replace('.', ',') }}
+        </div>
+      </div>
+
+    </div>
+  @end
+@end

@@ -14,8 +14,23 @@ export default class Product extends BaseModel {
   @column()
   declare price: number
 
+  @column({ columnName: 'sales_count' })
+  declare salesCount: number
+
   @column()
   declare description: string
+
+  @column()
+  declare developer: string | null
+
+  @column()
+  declare publisher: string | null
+
+  @column()
+  declare genre: string | null
+
+  @column.date()
+  declare release_date: DateTime | null
 
   @hasMany(() => Image)
   declare images: HasMany<typeof Image>

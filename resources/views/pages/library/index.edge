@@ -1,0 +1,82 @@
+@layout.app({ title: 'Minha Biblioteca' })
+  @slot('main')
+    <div class="py-12">
+      <div class="max-w-3xl mx-auto px-4">
+        <h1 class="text-2xl font-bold text-contrast mb-6">
+          Minha Biblioteca
+        </h1>
+
+        @if(!items || items.length === 0)
+          <div class="bg-white/5 p-6 rounded-md">
+            <p class="text-muted-dark">
+              Você ainda não comprou nenhum jogo. Vá até a página de <a href="{{ route('products.index') }}" class="text-primary underline">Jogos</a>para começar.
+            </p>
+          </div>
+        @else
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            @each(item in items)
+              <div class="bg-white/5 rounded-md p-4 text-base-color">
+                <div class="flex gap-4 items-center">
+                  <div class="w-20 h-12 bg-gray-800 rounded overflow-hidden">
+                    @if(item.product.images && item.product.images.length > 0)
+                      <img
+                        src="{{ route('images.show', { name: item.product.images[0].name }) }}"
+                        alt="{{ item.product.name }}"
+                        class="w-full h-full object-cover"
+                      />
+                    @else
+                      <div class="w-full h-full flex items-center justify-center text-muted-dark">
+                        Sem imagem
+                      </div>
+                    @end
+                  </div>
+                  <div class="flex-1">
+                    <a
+                      href="{{ route('products.show', { id: item.product.id }) }}"
+                      class="text-lg font-semibold text-contrast"
+                    >{{ item.product.name }}</a>
+                    <div class="text-sm text-muted-dark">
+                      {{ item.product.developer || item.product.publisher || '' }}
+                    </div>
+                    <div class="text-sm text-muted-dark mt-2">
+                      Quantidade: <strong class="text-contrast">{{ item.quantity }}</strong>
+                    </div>
+                    @if(item.codes && item.codes.length > 0)
+                      <div class="mt-2">
+                        <div class="text-sm text-muted-dark">
+                          Códigos de Ativação (simulação):
+                        </div>
+                        <ul class="mt-1 text-sm font-mono text-base-color space-y-1">
+                          @each(code in item.codes)
+                            <li class="text-contrast">
+                              {{ code }}
+                            </li>
+                          @endeach
+                        </ul>
+                      </div>
+                    @end
+                  </div>
+                  <div>
+                    <a href="{{ route('products.show', { id: item.product.id }) }}" class="btn-primary">Ver</a>
+                  </div>
+                </div>
+              </div>
+            @endeach
+          </div>
+
+          <div class="mt-6 flex justify-center items-center gap-3">
+            @if(page > 1)
+              <a href="{{ route('library.index') }}?page={{ page - 1 }}" class="px-3 py-1 rounded bg-white/5">Anterior</a>
+            @end
+            <div class="text-sm text-muted-dark">
+              Página {{ page }} de {{ totalPages }}
+            </div>
+            @if(page < totalPages)
+              <a href="{{ route('library.index') }}?page={{ page + 1 }}" class="px-3 py-1 rounded bg-white/5">Próxima</a>
+            @end
+          </div>
+        @end
+      </div>
+    </div>
+  @end
+@end

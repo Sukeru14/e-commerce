@@ -36,32 +36,23 @@ export default class AuthController {
     return response.redirect().toRoute('home')
   }
 
-  /**
-   * Mostra o formulário de edição de perfil
-   */
   public async edit({ view, auth }: HttpContext) {
     return view.render('pages/users/edit', { user: auth.user })
   }
 
-  /**
-   * Atualiza o perfil do usuário
-   */
   public async update({ request, response, auth, session }: HttpContext) {
     const user = auth.user!
 
-    // Passamos o ID do usuário atual para o validador
     const payload = await request.validateUsing(updateUserValidator, {
       meta: {
-        currentUserId: user.id
-      }
+        currentUserId: user.id,
+      },
     })
 
     user.merge({
       fullName: payload.fullName,
-      email: payload.email,
     })
 
-    // Atualiza a senha apenas se ela foi fornecida
     if (payload.password) {
       user.password = payload.password
     }
